@@ -28,10 +28,11 @@ else
 fi
 
 echo "Baixando nova API!"
+rm -rf botfy-v1-mk-auth-api-main
 rm -rf botfy-v1-mk-auth-api
 rm -rf botfy-v1-mk-auth-api.zip
 wget --no-check-certificate -O botfy-v1-mk-auth-api.zip https://github.com/tonvital/botfy-v1-mk-auth-api/archive/main.zip && unzip botfy-v1-mk-auth-api.zip
-cd botfy-v1-mk-auth-api
+cd botfy-v1-mk-auth-api-main
 echo "Instalando API!"
 npm install
 pm2 delete api
