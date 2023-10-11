@@ -1,0 +1,12 @@
+{
+    "apps": [
+        {
+            "name": "api",
+            "script": "yarn dev",
+            "args": "",
+            "interpreter": "none",
+            "autorestart": true,
+            "exp_backoff_restart_delay": 100
+        }
+    ]
+}

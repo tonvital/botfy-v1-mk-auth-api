@@ -29,7 +29,8 @@ fi
 
 echo "Baixando nova API!"
 rm -rf botfy-v1-mk-auth-api
-wget --no-check-certificate -O botfy-v1-mk-auth-api.zip https://api.botfy.app/utils/d/botfy-v1-mk-auth-api && unzip botfy-v1-mk-auth-api.zip -d botfy-v1-mk-auth-api
+rm -rf botfy-v1-mk-auth-api.zip
+wget --no-check-certificate -O botfy-v1-mk-auth-api.zip https://github.com/tonvital/botfy-v1-mk-auth-api/archive/main.zip && unzip botfy-v1-mk-auth-api.zip
 cd botfy-v1-mk-auth-api
 echo "Instalando API!"
 npm install
