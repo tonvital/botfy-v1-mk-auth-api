@@ -1,0 +1,20 @@
+version: '3'
+
+name: 'botfy-v1-mk-auth-api'
+
+services:
+  api:
+    container_name: botfy-v1-mk-auth-api
+    restart: on-failure
+    build:
+      context: ./
+      dockerfile: .dockerfile
+    environment:
+      PORT: 9657
+      IS_DOCKER: 1
+      DATABASE_IP: host.docker.internal
+      DATABASE_PASSWORD: vertrigo
+    ports:
+      - '9657:9657'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'

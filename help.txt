@@ -1,0 +1,12 @@
+Docker Install 
+curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh 
+
+Docker Compose Up
+docker compose up --force-recreate
+
+Docker build dockerfile
+docker build -f .dockerfile -t cw-api-image:1.0.0 .
+
+Docker run
+docker run -d -p 7077:7077 --name cw-api cw-api-image:1.0.0
+
