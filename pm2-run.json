@@ -2,7 +2,7 @@
     "apps": [
         {
             "name": "api",
-            "script": "yarn dev",
+            "script": "npm run dev",
             "args": "",
             "interpreter": "none",
             "autorestart": true,
