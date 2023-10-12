@@ -1,3 +1,7 @@
+LRED="\033[1;31m" # Light Red
+LGREEN="\033[1;32m" # Light Green
+NC='\033[0m' # No Color
+
 node -v | grep "v16"
 if [ $? -eq 0 ]
 then
@@ -41,11 +45,36 @@ pm2 start pm2-run.json --exp-backoff-restart-delay=100
 pm2 save
 pm2 startup
 
+clear
 echo "Checando API..."
 sleep 5
 
-if curl -s --head  --request GET http://localhost:9657/botfy-v1-mk-auth?f=heathCheck | grep "HTTP\/2\ 200" > /dev/null; then 
-  echo "API botfy-mk-auth foi instalada com sucesso!"
+
+FAIL_CODE=6
+
+check_status(){
+
+
+    curl -sf "${1}" > /dev/null
+
+    if [ ! $? = ${FAIL_CODE} ];then
+        echo "${LGREEN}${1} is online${NC}"
+    else
+        echo "${LRED}${1} is down${NC} ${$?}"
+    fi
+}
+
+
+curl -Is http://localhost:9657/botfy-v1-mk-auth?f=heathCheck | grep "200"
+
+if [ $? -eq 0 ]
+then
+echo "${LGREEN}API botfy-mk-auth foi instalada com sucesso!"
 else
-  echo "Oops! Algo deu errado na instalação!!!"
+echo "${LRED}Oops! Algo deu errado na instalação!!!"
 fi
+# if curl -s --head --request GET http://localhost:9657/botfy-v1-mk-auth?f=heathCheck | grep "HTTP\/2\ 200" > /dev/null; then 
+#   echo "API botfy-mk-auth foi instalada com sucesso!"
+# else
+#   echo "Oops! Algo deu errado na instalação!!!"
+# fi
