@@ -35,9 +35,11 @@ rm -rf botfy-v1-mk-auth-api-main
 rm -rf botfy-v1-mk-auth-api
 rm -rf botfy-v1-mk-auth-api.zip
 wget --no-check-certificate -O botfy-v1-mk-auth-api.zip https://github.com/tonvital/botfy-v1-mk-auth-api/archive/main.zip && unzip -o botfy-v1-mk-auth-api.zip
+clear
 cd botfy-v1-mk-auth-api-main
 echo "Instalando API..."
 npm install
+clear
 pm2 stop api
 pm2 delete api
 pm2 start pm2-run.json --exp-backoff-restart-delay=100
