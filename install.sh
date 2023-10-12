@@ -69,9 +69,9 @@ curl -Is http://localhost:9657/botfy-v1-mk-auth?f=heathCheck | grep "200"
 
 if [ $? -eq 0 ]
 then
-echo "${LGREEN}API botfy-mk-auth foi instalada com sucesso!"
+echo "${LGREEN} API botfy-mk-auth foi instalada com sucesso! ${NC}"
 else
-echo "${LRED}Oops! Algo deu errado na instalação!!!"
+echo "${LRED} Oops! Algo deu errado na instalação!!! ${NC}"
 fi
 # if curl -s --head --request GET http://localhost:9657/botfy-v1-mk-auth?f=heathCheck | grep "HTTP\/2\ 200" > /dev/null; then 
 #   echo "API botfy-mk-auth foi instalada com sucesso!"
