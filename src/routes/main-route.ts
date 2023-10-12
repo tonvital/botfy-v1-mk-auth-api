@@ -64,10 +64,47 @@ export class AuthController {
   @Post('/')
   async getRoutePost(
     @QueryParam('f') func: string,
+    @QueryParam('cpfCnpj') cpfCnpj: string,
+    @QueryParam('billId') billId: string,
     @Body() body: any,
     @Res() res: Response
   ) {
-    if (func === 'createInstallByCPF') {
+    if (func === 'heathCheck') {
+      return HttpResponse.success({
+        healthcheck: 'healthy',
+        datetime: moment().format(),
+        version: '1.0.1'
+      })
+    } else if (func === 'getClientByCPF') {
+      if (!cpfCnpj)
+        return HttpResponse.error(res, Translate.get('missing_parameters'))
+
+      const client = await MKRep.getClientByCPFCNPJ(cpfCnpj)
+
+      return HttpResponse.success(client)
+    } else if (func === 'getBillById') {
+      if (!billId)
+        return HttpResponse.error(res, Translate.get('missing_parameters'))
+
+      const bill = await MKRep.getClientBillById(billId)
+
+      return HttpResponse.success(bill)
+    } else if (func === 'getInstalacoesByClientCPF') {
+      if (!cpfCnpj)
+        return HttpResponse.error(res, Translate.get('missing_parameters'))
+
+      const installations = await MKRep.getInstalacoesByClientCPF(cpfCnpj)
+
+      return HttpResponse.success(installations)
+    } else if (func === 'getAllPlans') {
+      const plans = await MKRep.getAllPlans()
+
+      return HttpResponse.success(plans)
+    } else if (func === 'getBotfyAttendant') {
+      const plans = await MKRep.getBotfyAttendant()
+
+      return HttpResponse.success(plans)
+    } else if (func === 'createInstallByCPF') {
       const {
         uuid_solic,
         phoneNumber,
