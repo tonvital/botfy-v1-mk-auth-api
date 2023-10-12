@@ -21,7 +21,7 @@ export const getFormattedCPFCNPJ = (cpfCnpj: string) => {
 }
 
 export const print = (
-  message: string,
+  message: any,
   type: 'success' | 'info' | 'warning' | 'error' = 'info',
   showHour: boolean = true
 ) => {
