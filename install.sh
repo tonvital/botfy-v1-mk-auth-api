@@ -1,3 +1,4 @@
+clear
 node -v | grep "v16"
 if [ $? -eq 0 ]
 then
