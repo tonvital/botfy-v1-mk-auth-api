@@ -1,3 +1,4 @@
+rm -rf /var/www/botfy-v1-mk-auth
 clear
 curl --version | grep "curl"
 if [ $? -eq 0 ]

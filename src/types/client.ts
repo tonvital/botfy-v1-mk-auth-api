@@ -5,6 +5,7 @@ export type Client = {
   id: string
   conta: string
   name: string
+  nome: string
   cadastro: string
   login: string
   password: string

@@ -306,6 +306,7 @@ export class MKRep {
             cli.isConnected = cli.connected !== null
             cli.observacao = cli.observacao === 'sim'
             cli.bloqueado = cli.bloqueado === 'sim'
+            cli.name = cli.nome
             cli.plano = await MKRep.getPlanByName(cli.plano)
             cli.oss = await MKRep.getChamadosByClientLogin(cli.login)
             cli.bills = await MKRep.getClientBillsByLogin(cli.login)
