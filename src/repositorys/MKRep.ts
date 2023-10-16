@@ -148,7 +148,7 @@ export class MKRep {
   }
 
   static async getAllPlans() {
-    let plan = null
+    let plans = []
 
     try {
       const query = `SELECT nome, valor, velup AS upload, veldown AS download, REPLACE(REPLACE(descricao, '\r', ''), '\n', '\n') AS descricao, desc_titulo FROM sis_plano WHERE oculto = 'nao' ORDER BY valor ASC;`
@@ -158,7 +158,7 @@ export class MKRep {
         for (let i = 0; i < results.length; i++) {
           const p = results[i]
           if (p) {
-            plan = {
+            plans.push({
               id: sha1(p.nome),
               name: p.nome,
               title: p.desc_titulo,
@@ -166,16 +166,16 @@ export class MKRep {
               value: p.valor,
               upload: p.upload,
               download: p.download
-            }
+            })
           }
         }
       }
     } catch (e) {
       console.log(e)
-      plan = null
+      plans = []
     }
 
-    return plan
+    return plans
   }
 
   static async getQRPixFromBillUUID(uuidLanc: string) {
