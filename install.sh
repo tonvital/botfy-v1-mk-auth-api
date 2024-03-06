@@ -61,6 +61,8 @@ pm2 stop api
 pm2 delete api
 pm2 start pm2-run.json --exp-backoff-restart-delay=100
 pm2 save
+pm2 startup
+pm2 save
 
 clear
 echo "Checando API..."
