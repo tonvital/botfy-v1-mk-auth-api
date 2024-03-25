@@ -76,3 +76,5 @@ echo "API botfy-mk-auth foi instalada com sucesso!"
 else
 echo "Oops! Algo deu errado na instalação!!!"
 fi
+
+pm2 status
