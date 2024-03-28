@@ -244,4 +244,18 @@ export class AuthController {
 
     return HttpResponse.error(res, `Which function do you want?`, 404)
   }
+
+  @Get('/get-clientes-count-telefone-is-null')
+  async getClientesCountWithTelefoneIsNull(@Res() res: Response) {
+    const count = await MKRep.getClientesCountWithTelefoneIsNull()
+
+    return HttpResponse.success(count)
+  }
+
+  @Get('/populate-telefone-with-celular')
+  async populateTelefoneWithCelular(@Res() res: Response) {
+    const updated = await MKRep.populateTelefoneWithCelular()
+
+    return HttpResponse.success(updated)
+  }
 }

@@ -606,4 +606,51 @@ export class MKRep {
 
     return created
   }
+
+  static async populateTelefoneWithCelular() {
+    let result = {
+      updated: false,
+      updatedRows: 0
+    }
+
+    let query = `UPDATE sis_cliente SET telefone = celular WHERE telefone IS NULL;`
+
+    try {
+      const results = await MKRep.getConn().query(query)
+
+      if (results.affectedRows) {
+        result.updated = true
+        result.updatedRows = results.affectedRows
+      }
+    } catch (e) {
+      console.log(e)
+      result.updated = false
+    }
+
+    return result
+  }
+
+  static async getClientesCountWithTelefoneIsNull() {
+    let count = 0
+
+    let query = `SELECT COUNT(*) AS total FROM sis_cliente WHERE telefone IS NULL;`
+
+    try {
+      const results = await MKRep.getConn().query(query)
+
+      if (Array.isArray(results)) {
+        for (let i = 0; i < results.length; i++) {
+          const p = results[i]
+          if (p) {
+            count = p.total
+          }
+        }
+      }
+    } catch (e) {
+      console.log(e)
+      count = 0
+    }
+
+    return count
+  }
 }
