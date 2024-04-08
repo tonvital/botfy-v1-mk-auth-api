@@ -48,9 +48,8 @@ export class MKRep {
     let result = false
 
     try {
-      const queryString = `ALTER TABLE ${tableName} ADD last_trust_unlock_date DATETIME DEFAULT '${moment().format(
-        'YYYY-MM-DD HH:mm:ss'
-      )}';`
+      const date = moment().subtract(1, 'month').format('YYYY-MM-DD HH:mm:ss')
+      const queryString = `ALTER TABLE ${tableName} ADD last_trust_unlock_date DATETIME DEFAULT '${date}';`
 
       const response = await MKRep.execute(queryString)
       if (response) result = true
