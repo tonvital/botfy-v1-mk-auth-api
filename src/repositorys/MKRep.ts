@@ -236,7 +236,7 @@ export class MKRep {
     let bills: Array<any> = []
 
     try {
-      const query = `SELECT id, uuid_lanc, datavenc, status, valor, tipocob, codigo_carne, linhadig FROM sis_lanc WHERE login = '${login}' AND (status = 'vencido' OR status = 'aberto') AND deltitulo = 0 ORDER BY datavenc DESC;`
+      const query = `SELECT id, uuid_lanc, datavenc, status, valor, tipocob, codigo_carne, linhadig FROM sis_lanc WHERE login = '${login}' AND (status = 'vencido' OR status = 'aberto') AND deltitulo = 0 ORDER BY datavenc ASC;`
 
       const results = await MKRep.execute(query)
       if (Array.isArray(results)) {
