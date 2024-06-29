@@ -292,7 +292,7 @@ export class MKRep {
       await MKRep.createColumnInTable('sis_cliente', 'last_trust_unlock_date')
     }
 
-    const query = `SELECT (SELECT utilizar FROM sis_boleto WHERE id = CLI.conta) AS contaIntegration, (SELECT MAX(C.radacctid) AS conectado FROM radacct C WHERE C.acctstoptime IS NULL AND C.username = CLI.login LIMIT 1) as connected, CLI.id, CLI.conta, CLI.nome, CLI.cadastro, CLI.login, CLI.senha, CLI.email, CLI.venc AS vencimento, CLI.observacao, CLI.rem_obs, CLI.last_trust_unlock_date, CLI.bloqueado, CLI.uuid_cliente, NOW() AS dataHora, CLI.plano, CLI.status_corte FROM sis_cliente AS CLI WHERE (cpf_cnpj = '${cpfCnpj}' OR cpf_cnpj = '${getFormattedCPFCNPJ(
+    const query = `SELECT (SELECT utilizar FROM sis_boleto WHERE id = CLI.conta) AS contaIntegration, (SELECT MAX(C.radacctid) AS conectado FROM radacct C WHERE C.acctstoptime IS NULL AND C.username = CLI.login LIMIT 1) as connected, CLI.id, CLI.conta, CLI.nome, CLI.cadastro, CLI.login, CLI.senha, CLI.email, CLI.venc AS vencimento, CLI.observacao, CLI.rem_obs, CLI.last_trust_unlock_date, CLI.bloqueado, CLI.uuid_cliente, NOW() AS dataHora, CLI.plano, CLI.status_corte, CLI.endereco, CLI.endereco_res, CLI.bairro, CLI.bairro_res, CLI.cidade, CLI.cidade_res, CLI.numero, CLI.numero_res, CLI.cep, CLI.cep_res, CLI.estado, CLI.estado_res, CLI.complemento, CLI.complemento_res FROM sis_cliente AS CLI WHERE (cpf_cnpj = '${cpfCnpj}' OR cpf_cnpj = '${getFormattedCPFCNPJ(
       cpfCnpj
     )}') AND cli_ativado = 's';`
 
@@ -309,6 +309,13 @@ export class MKRep {
             cli.plano = await MKRep.getPlanByName(cli.plano)
             cli.oss = await MKRep.getChamadosByClientLogin(cli.login)
             cli.bills = await MKRep.getClientBillsByLogin(cli.login)
+            cli.cep = cli.cep || cli.cep_res
+            cli.bairro = cli.bairro || cli.bairro_res
+            cli.endereco = cli.endereco || cli.endereco_res
+            cli.cidade = cli.cidade || cli.cidade_res
+            cli.estado = cli.estado || cli.estado_res
+            cli.numero = cli.numero || cli.numero_res
+            cli.complemento = cli.complemento || cli.complemento_res
             clients.push(cli)
           }
         }
