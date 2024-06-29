@@ -17,7 +17,19 @@ export const isWindows = () => {
 const chalk = require('chalk')
 
 export const getFormattedCPFCNPJ = (cpfCnpj: string) => {
-  return cpf.isValid(cpfCnpj) ? cpf.format(cpfCnpj) : cnpj.format(cpfCnpj)
+  let formatted = 'NOT-VALID'
+
+  if (cpf.isValid(cpfCnpj)) {
+    formatted = cpf.format(cpfCnpj)
+  } else if (cnpj.isValid(cpfCnpj)) {
+    formatted = cnpj.format(cpfCnpj)
+  }
+
+  return formatted
+}
+
+export const getOnlyNumber = (value: string) => {
+  return value.replace(/\D/g, '')
 }
 
 export const print = (
