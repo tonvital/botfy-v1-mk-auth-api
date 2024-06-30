@@ -11,8 +11,14 @@ export class MKRep {
   static botfy_email = 'atendente@botfy.com'
   static botfy_login = 'botfy_login'
   static botfy_password = sha256('diTzCA$@35&0')
+  static started = false
 
   static getConn = () => {
+    if (!MKRep.started) {
+      MKRep.createGetOnlyNumbersFunctionIfNotRegistered()
+      MKRep.started = true
+    }
+
     if (!datasource) return AppDataSource
 
     return datasource
