@@ -1,9 +1,9 @@
 import { datasource } from '..'
 import { AppDataSource } from '../data-source'
-import moment from 'moment'
 import { getFormattedCPFCNPJ } from '../utils/functions'
 import { Client } from '../types/client'
 import sha1 from 'sha1'
+import moment from 'moment'
 import sha256 from 'sha256'
 
 export class MKRep {
@@ -38,6 +38,55 @@ export class MKRep {
 
       if (response) result = true
     } catch (e) {
+      result = false
+    }
+
+    return result
+  }
+
+  static async createGetOnlyNumbersFunctionIfNotRegistered() {
+    let result = false
+
+    try {
+      const functionCheckQuery = `
+        SELECT COUNT(*) as count 
+        FROM information_schema.ROUTINES 
+        WHERE ROUTINE_SCHEMA = 'mkradius' 
+          AND ROUTINE_NAME = 'only_numbers'
+      `
+
+      const functionCheckResponse = await MKRep.execute(functionCheckQuery)
+
+      if (functionCheckResponse[0].count > 0) {
+        result = true
+      } else {
+        const createFunctionQuery = `
+          CREATE FUNCTION only_numbers(str VARCHAR(255)) RETURNS VARCHAR(255)
+          BEGIN
+            DECLARE result VARCHAR(255) DEFAULT '';
+            DECLARE i INT DEFAULT 1;
+            WHILE i <= CHAR_LENGTH(str) DO
+              IF SUBSTRING(str, i, 1) BETWEEN '0' AND '9' THEN
+                SET result = CONCAT(result, SUBSTRING(str, i, 1));
+              END IF;
+              SET i = i + 1;
+            END WHILE;
+            RETURN result;
+          END;
+        `
+
+        await MKRep.execute(createFunctionQuery)
+
+        // Double-check if the function was created successfully
+        const doubleCheckResponse = await MKRep.execute(functionCheckQuery)
+        if (doubleCheckResponse[0].count > 0) {
+          result = true
+        } else {
+          result = false
+        }
+      }
+    } catch (e) {
+      console.error('Error creating function:', e)
       result = false
     }
 
@@ -292,7 +341,7 @@ export class MKRep {
       await MKRep.createColumnInTable('sis_cliente', 'last_trust_unlock_date')
     }
 
-    const query = `SELECT (SELECT utilizar FROM sis_boleto WHERE id = CLI.conta) AS contaIntegration, (SELECT MAX(C.radacctid) AS conectado FROM radacct C WHERE C.acctstoptime IS NULL AND C.username = CLI.login LIMIT 1) as connected, CLI.id, CLI.conta, CLI.nome, CLI.cadastro, CLI.login, CLI.senha, CLI.email, CLI.venc AS vencimento, CLI.observacao, CLI.rem_obs, CLI.last_trust_unlock_date, CLI.bloqueado, CLI.uuid_cliente, NOW() AS dataHora, CLI.plano, CLI.status_corte, CLI.endereco, CLI.endereco_res, CLI.bairro, CLI.bairro_res, CLI.cidade, CLI.cidade_res, CLI.numero, CLI.numero_res, CLI.cep, CLI.cep_res, CLI.estado, CLI.estado_res, CLI.complemento, CLI.complemento_res FROM sis_cliente AS CLI WHERE (cpf_cnpj = '${cpfCnpj}' OR cpf_cnpj = '${getFormattedCPFCNPJ(
+    const query = `SELECT (SELECT utilizar FROM sis_boleto WHERE id = CLI.conta) AS contaIntegration, (SELECT MAX(C.radacctid) AS conectado FROM radacct C WHERE C.acctstoptime IS NULL AND C.username = CLI.login LIMIT 1) as connected, CLI.id, CLI.conta, CLI.nome, CLI.cadastro, CLI.login, CLI.senha, CLI.email, CLI.venc AS vencimento, CLI.observacao, CLI.rem_obs, CLI.last_trust_unlock_date, CLI.bloqueado, CLI.uuid_cliente, NOW() AS dataHora, CLI.plano, CLI.status_corte, CLI.endereco, CLI.endereco_res, CLI.bairro, CLI.bairro_res, CLI.cidade, CLI.cidade_res, CLI.numero, CLI.numero_res, CLI.cep, CLI.cep_res, CLI.estado, CLI.estado_res, CLI.complemento, CLI.complemento_res FROM sis_cliente AS CLI WHERE (only_numbers(CLI.rg) = '${cpfCnpj}' OR cpf_cnpj = '${cpfCnpj}' OR cpf_cnpj = '${getFormattedCPFCNPJ(
       cpfCnpj
     )}') AND cli_ativado = 's';`
 
