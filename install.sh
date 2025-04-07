@@ -3,6 +3,13 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
+clear 
+echo "Atualizando o sistema..."
+apt update -y
+echo "Sistema atualizado com sucesso!"
+
+sleep 2
+
 rm -rf /var/www/botfy-v1-mk-auth
 clear
 curl --version | grep "curl"
@@ -11,7 +18,7 @@ then
   echo "Curl já instalado."
 else
   echo "Instalando Curl..."
-  sudo apt install curl 
+  apt install curl 
   echo "Instalação concluida do Curl!"
 fi
 
