@@ -5,7 +5,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 rm -rf /var/www/botfy-v1-mk-auth
-clear
+#clear
 curl --version | grep "curl"
 if [ $? -eq 0 ]
 then
@@ -16,7 +16,7 @@ else
   echo "Instalação concluida do Curl!"
 fi
 
-clear
+#clear
 node -v | grep "v16"
 if [ $? -eq 0 ]
 then
@@ -33,7 +33,7 @@ else
   echo "Instalação concluida do NodeJS!"
 fi
 
-clear
+#clear
 pm2 -v
 if [ $? -eq 0 ]
 then
@@ -48,7 +48,7 @@ else
   echo "Instalação concluida do PM2!"
 fi
 
-clear
+#clear
 echo "Baixando nova API..."
 rm -rf botfy-v1-mk-auth-api-main/
 rm -rf botfy-v1-mk-auth-api-main
@@ -56,12 +56,12 @@ rm -rf botfy-v1-mk-auth-api
 rm -rf botfy-v1-mk-auth-api.zip
 wget --no-check-certificate -O botfy-v1-mk-auth-api.zip https://github.com/tonvital/botfy-v1-mk-auth-api/archive/main.zip && unzip -o botfy-v1-mk-auth-api.zip
 
-clear
+#clear
 echo "Instalando API..."
 cd botfy-v1-mk-auth-api-main
 npm install
 
-clear
+#clear
 pm2 stop api
 pm2 delete api
 pm2 start pm2-run.json --exp-backoff-restart-delay=100
@@ -69,7 +69,7 @@ pm2 save
 pm2 startup
 pm2 save
 
-clear
+#clear
 echo "Checando API..."
 sleep 5
 
