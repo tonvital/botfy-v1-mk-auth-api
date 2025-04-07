@@ -1,3 +1,8 @@
+if [ "$EUID" -ne 0 ]; then
+  echo "🚫 Este script precisa ser executado como root (use: sudo ./install.sh)"
+  exit 1
+fi
+
 rm -rf /var/www/botfy-v1-mk-auth
 clear
 curl --version | grep "curl"
