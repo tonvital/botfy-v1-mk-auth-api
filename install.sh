@@ -3,13 +3,6 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-clear 
-echo "Atualizando o sistema..."
-apt update -y
-echo "Sistema atualizado com sucesso!"
-
-sleep 2
-
 rm -rf /var/www/botfy-v1-mk-auth
 clear
 curl --version | grep "curl"
@@ -54,38 +47,38 @@ else
   echo "Instalação concluida do PM2!"
 fi
 
-clear
-echo "Baixando nova API..."
-rm -rf botfy-v1-mk-auth-api-main/
-rm -rf botfy-v1-mk-auth-api-main
-rm -rf botfy-v1-mk-auth-api
-rm -rf botfy-v1-mk-auth-api.zip
-wget --no-check-certificate -O botfy-v1-mk-auth-api.zip https://github.com/tonvital/botfy-v1-mk-auth-api/archive/main.zip && unzip -o botfy-v1-mk-auth-api.zip
+# clear
+# echo "Baixando nova API..."
+# rm -rf botfy-v1-mk-auth-api-main/
+# rm -rf botfy-v1-mk-auth-api-main
+# rm -rf botfy-v1-mk-auth-api
+# rm -rf botfy-v1-mk-auth-api.zip
+# wget --no-check-certificate -O botfy-v1-mk-auth-api.zip https://github.com/tonvital/botfy-v1-mk-auth-api/archive/main.zip && unzip -o botfy-v1-mk-auth-api.zip
 
-clear
-echo "Instalando API..."
-cd botfy-v1-mk-auth-api-main
-npm install
+# clear
+# echo "Instalando API..."
+# cd botfy-v1-mk-auth-api-main
+# npm install
 
-clear
-pm2 stop api
-pm2 delete api
-pm2 start pm2-run.json --exp-backoff-restart-delay=100
-pm2 save
-pm2 startup
-pm2 save
+# clear
+# pm2 stop api
+# pm2 delete api
+# pm2 start pm2-run.json --exp-backoff-restart-delay=100
+# pm2 save
+# pm2 startup
+# pm2 save
 
-clear
-echo "Checando API..."
-sleep 5
+# clear
+# echo "Checando API..."
+# sleep 5
 
-curl -Is http://localhost:9657/botfy-v1-mk-auth?f=heathCheck | grep "200"
+# curl -Is http://localhost:9657/botfy-v1-mk-auth?f=heathCheck | grep "200"
 
-if [ $? -eq 0 ]
-then
-echo "API botfy-mk-auth foi instalada com sucesso!"
-else
-echo "Oops! Algo deu errado na instalação!!!"
-fi
+# if [ $? -eq 0 ]
+# then
+# echo "API botfy-mk-auth foi instalada com sucesso!"
+# else
+# echo "Oops! Algo deu errado na instalação!!!"
+# fi
 
-pm2 status
+# pm2 status
